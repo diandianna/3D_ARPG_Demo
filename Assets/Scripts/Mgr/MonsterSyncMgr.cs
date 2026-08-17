@@ -109,8 +109,13 @@ public class MonsterSyncMgr : MonoBehaviour
                 dead.Add(id);
         foreach(int id in dead)
         {
-            if(monsters.TryGetValue(id,out GameObject obj) && obj != null) 
-                Destroy(obj);
+            if(monsters.TryGetValue(id,out GameObject obj) && obj != null)
+            {
+                Animator animator = obj.GetComponent<Animator>();
+                animator.SetBool("Death", true);
+                Destroy(obj,3f);
+            }
+
             monsters.Remove(id);
             targetPos.Remove(id);
             targetYaw.Remove(id);

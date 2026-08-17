@@ -233,5 +233,6 @@ public class BulletTimeMgr : MonoBehaviour
     {
         Time.timeScale = timescale;
         yield return new WaitForSecondsRealtime(waittime);
+        Time.timeScale = 1;
     }
 }
