@@ -1,0 +1,57 @@
+# ===== Unity 生成的目录（不要提交）=====
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]serSettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# ===== IDE 编辑器缓存 =====
+.vs/
+.vscode/
+.idea/
+.vsconfig
+
+# ===== VS / Rider / MD 自动生成的工程文件（Unity 打开时会重新生成）=====
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ===== Unity 崩溃报告等 =====
+sysinfo.txt
+crashlytics-build.properties
+
+# ===== 构建产物 =====
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# ===== 系统生成 =====
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===== 重要说明 =====
+# 千万不要把 *.meta 加进 .gitignore！
+# .meta 文件存的是资源 GUID 和导入设置，不提交会导致项目在别人电脑上打不开/丢引用。
+
+# ===== 3D 源文件（3ds Max，体积大，不入库）=====
+*.max
