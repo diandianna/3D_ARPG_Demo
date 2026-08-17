@@ -55,3 +55,10 @@ Thumbs.db
 
 # ===== 3D 源文件（3ds Max，体积大，不入库）=====
 *.max
+
+# ===== 大型贴图/UI 图（体积大不入库，README 已说明；本地保留）=====
+*.png
+*.png.meta
+*.tga
+*.tga.meta
+*.max.meta
