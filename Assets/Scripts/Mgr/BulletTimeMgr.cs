@@ -91,9 +91,9 @@ public class BulletTimeMgr : MonoBehaviour
         }
         if (IsBulletTime)
         {
-            print("子弹时间中");
+           // print("子弹时间中");
             float mouseX = Input.GetAxisRaw("Mouse X");
-            print("mouseX: " + mouseX);
+           // print("mouseX: " + mouseX);
             accumulator += mouseX;// * Time.unscaledDeltaTime * 5f;
             if (monsters.Count > 0)
             {

@@ -44,10 +44,6 @@ public class PlayerCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        if (SocketMgr.Instance.Check() == false)
-        {
-            return;
-        }
         if(BulletTimeMgr.Instance.IsBulletTime||BulletTimeMgr.Instance.sphereIsMoving) return;
         // 鼠标输入
         float mouseX = Input.GetAxis("Mouse X");

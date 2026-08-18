@@ -54,7 +54,8 @@ public class SocketMgr : MonoBehaviour
         //主线程处理消息
         while(_msgQueue.TryDequeue(out string msg))
         {
-            Debug.Log(msg);
+            //Debug.Log(msg);
+
            // 在主线程处理场景切换等 Unity API 调用
             if (msg == "登录成功")
             {
@@ -84,7 +85,7 @@ public class SocketMgr : MonoBehaviour
                 float randomX = Random.Range(-1.5f, 1.5f);
                 Vector3 vector3 = GameDataMgr.Instance.monsters[enemyIndex].transform.position + transform.position + transform.right * randomX + transform.up * 1.8f;
                 DamageFontMgr.Instance.ShowDamageFont(vector3,damage,WorldCanvasTrans,enemyIndex);
-                print("造成伤害: " + damage);
+                //print("造成伤害: " + damage);
 
                 CountingMgr.Instance.AtkCounting();
             }
@@ -459,9 +460,9 @@ public class SocketMgr : MonoBehaviour
                 break;
             case MsgType.Atk:
                 {
-                    print("收到攻击消息");
+                    //print("收到攻击消息");
                     damage = BitConverter.ToInt32(buffer, index);
-                    print("伤害值: " + damage);
+                    //print("伤害值: " + damage);
                     index += 4;
                     enemyIndex = BitConverter.ToInt32(buffer, index);
                     _msgQueue.Enqueue($"攻击消息");
@@ -470,7 +471,7 @@ public class SocketMgr : MonoBehaviour
                 break;
             case MsgType.MultiSync:
                 {
-                    print("收到多人同步消息");
+                    //print("收到多人同步消息");
                     int roomid = BitConverter.ToInt32(buffer, index);
                     index += 4;
                     float x = BitConverter.ToSingle(buffer, index);
@@ -490,14 +491,14 @@ public class SocketMgr : MonoBehaviour
                     }
                     else
                     {
-                        print("创建其他玩家");
+                        //print("创建其他玩家");
                         _msgQueue.Enqueue($"创建其他玩家|{acountName}|{x}|{y}|{z}|{yrot}");
                     }
                 }
                 break;
             case MsgType.Multiplayer:
                 {
-                    print("收到联机房间消息");
+                    //print("收到联机房间消息");
                     int result = BitConverter.ToInt32(buffer, index);
                     index += 4;
                     int roomid = BitConverter.ToInt32(buffer, index);

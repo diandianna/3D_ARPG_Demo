@@ -88,7 +88,7 @@ public class MonsterSyncMgr : MonoBehaviour
         {
             return;
         }
-        print("CreatingMonster");
+        //print("CreatingMonster");
         GameObject monster = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/LanAI"), vector3, Quaternion.identity);
         monster.transform.SetParent(SocketMgr.Instance.WorldCanvasTrans,true);
         Auto auto = monster.GetComponent<Auto>();

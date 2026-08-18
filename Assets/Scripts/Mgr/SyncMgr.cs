@@ -77,7 +77,7 @@ public class SyncMgr : MonoBehaviour
         {
             return;
         }
-        print("Creating");
+       // print("Creating");
        visitors.Add(name ,GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Lu"),vector3,Quaternion.identity));
         lastPos[name] = vector3;
         //StartCoroutine(LerpPos(name));
@@ -103,7 +103,7 @@ public class SyncMgr : MonoBehaviour
     }
     public IEnumerator SyncLoop(Socket socket)
     {
-        while (isRoom)
+        while (isRoom && socket != null && socket.Connected) 
         {
             SendMyState(socket);
             yield return new WaitForSecondsRealtime(0.1f);
@@ -113,6 +113,7 @@ public class SyncMgr : MonoBehaviour
 
     public void SendMyState(Socket socket)
     {
+        if (socket == null || !socket.Connected) return;
         byte[] response = new byte[4 + 4 + 4 + 12 + 4];
         BitConverter.GetBytes(4 + 4 + 4 + 12 + 4).CopyTo(response, 0);//消息长度
         BitConverter.GetBytes(98).CopyTo(response, 4);//消息类型
