@@ -42,7 +42,7 @@ public class AtkTrigger : MonoBehaviour
     {
         Debug.Log($"OnTriggerEnter触发! other={other.name}, playerIsAtking={GameDataMgr.Instance.playerIsAtking}, hitList.Count={hitList.Count}");
         if (!GameDataMgr.Instance.playerIsAtking && CompareTag("PlayerAtk")) return;
-        if(!GameDataMgr.Instance.monsterIsAtking.ContainsKey(other.gameObject) && CompareTag("MonsterAtk")) return;
+        if(!GameDataMgr.Instance.monsterIsAtking.Contains(other.gameObject) && CompareTag("MonsterAtk")) return;
 
         auto = other.GetComponent<Auto>();
         Debug.Log($"auto={(auto != null ? auto.name : "NULL")}, other.tag={other.tag}, myTag={tag}");
@@ -67,7 +67,8 @@ public class AtkTrigger : MonoBehaviour
             }
             hitList.Add(other.gameObject);
             Debug.Log("MonsterAtk触发了玩家");
-            GameDataMgr.Instance.playerData.ChangeHp(10);//怪物攻击玩家，扣血10 (暂时写死测试)
+            GameDataMgr.Instance.mainCharacter.GetComponent<Animator>().SetTrigger("Hurt");
+            GameDataMgr.Instance.playerData.ChangeHp(-10);//怪物攻击玩家，扣血10 (暂时写死测试)
         }
     }
 

@@ -146,7 +146,6 @@ public class SocketMgr : MonoBehaviour
                 float yaw =float.Parse(parts[6]);
                 int hp =int.Parse(parts[7]);
                 int state =int.Parse(parts[8]);
-                if (hp <= 0) return;
                 MonsterSyncMgr.Instance.OnRecvMonster(id, type, new Vector3(x, y, z), yaw, hp, state);
             }
 

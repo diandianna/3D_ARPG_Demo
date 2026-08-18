@@ -21,7 +21,7 @@ public class GameDataMgr:MonoBehaviour
     public List<GameObject> monsters = new List<GameObject>();
 
     public bool playerIsAtking = false;
-    public Dictionary<GameObject, bool> monsterIsAtking = new Dictionary<GameObject, bool>();
+    public List<GameObject> monsterIsAtking = new List<GameObject>();
 
     public int soulIntegrity = 100;  // 灵魂完整度 0~100
     public float sanity = 100;         // 理智值 0~100

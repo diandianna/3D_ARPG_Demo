@@ -13,6 +13,7 @@ public class MonsterSyncMgr : MonoBehaviour
     Dictionary<int, float> targetYaw = new Dictionary<int, float>();
     Dictionary<int, Vector3> lastPos = new Dictionary<int, Vector3>();
     HashSet<int> seeded = new HashSet<int>();
+    HashSet<int> dying = new HashSet<int>();
     Dictionary<int ,GameObject> hpObj = new Dictionary<int ,GameObject>();
     Dictionary<int ,Image> hpImg = new Dictionary<int , Image>();
     void Start()
@@ -29,6 +30,7 @@ public class MonsterSyncMgr : MonoBehaviour
         {
             int id = kv.Key;
             GameObject obj = kv.Value;
+            if (dying.Contains(id)) continue;
             if(hpObj.TryGetValue(id, out GameObject hpobj))
             {
                 hpObj[id].transform.LookAt(Camera.main.transform);
@@ -58,6 +60,13 @@ public class MonsterSyncMgr : MonoBehaviour
     public void OnRecvMonster(int id, int type, Vector3 pos, float yaw, int hp, int state)
     {
         seeded.Add(id);
+
+        if (hp <= 0)
+        {
+            MarkDead(id);
+            return;
+        }
+
         targetPos[id] = pos;
         targetYaw[id] = yaw;
         if(monsters.TryGetValue(id,out GameObject obj) && obj != null)
@@ -108,21 +117,31 @@ public class MonsterSyncMgr : MonoBehaviour
             if(!seeded.Contains(id)) 
                 dead.Add(id);
         foreach(int id in dead)
-        {
-            if(monsters.TryGetValue(id,out GameObject obj) && obj != null)
-            {
-                Animator animator = obj.GetComponent<Animator>();
-                animator.SetBool("Death", true);
-                Destroy(obj,3f);
-            }
-
-            monsters.Remove(id);
-            targetPos.Remove(id);
-            targetYaw.Remove(id);
-            lastPos.Remove(id);
-            hpImg.Remove(id);
-            hpObj.Remove(id);
-        }
+            MarkDead(id);
         seeded.Clear();
+    }
+
+    void MarkDead(int id)
+    {
+        if (dying.Contains(id)) return;
+        if (!monsters.TryGetValue(id, out GameObject obj) || obj == null) return;
+        dying.Add(id);
+        Animator animator = obj.GetComponent<Animator>();
+        if (animator != null) animator.SetBool("Death", true);
+        StartCoroutine(DestroyMonster(id, 3f));
+    }
+
+    IEnumerator DestroyMonster(int id, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (monsters.TryGetValue(id, out GameObject obj) && obj != null)
+            Destroy(obj);
+        monsters.Remove(id);
+        targetPos.Remove(id);
+        targetYaw.Remove(id);
+        lastPos.Remove(id);
+        hpImg.Remove(id);
+        hpObj.Remove(id);
+        dying.Remove(id);
     }
 }

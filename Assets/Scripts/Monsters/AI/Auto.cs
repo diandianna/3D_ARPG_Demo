@@ -121,7 +121,8 @@ public class Auto : MonoBehaviour
         {
             print("释放技能");
             skillt = Time.time;
-
+            if (!GameDataMgr.Instance.monsterIsAtking.Contains(gameObject))
+                GameDataMgr.Instance.monsterIsAtking.Add(gameObject);
         }
 
         if (Vector3.Distance(transform.position, targetPos.position) < 2.8f)
@@ -132,12 +133,16 @@ public class Auto : MonoBehaviour
                 if (AtkCount == -1)
                     transform.Translate(Vector3.right * Time.deltaTime * 2f);
                 animator.SetInteger("LorRMove", 1);
+                if (GameDataMgr.Instance.monsterIsAtking.Contains(gameObject))
+                    GameDataMgr.Instance.monsterIsAtking.Remove(gameObject);
             }
             else if (randLorRMove < 0)
             {
                 if (AtkCount == -1)
                     transform.Translate(Vector3.right * Time.deltaTime * -2f);
                 animator.SetInteger("LorRMove", -1);
+                if (GameDataMgr.Instance.monsterIsAtking.Contains(gameObject))
+                    GameDataMgr.Instance.monsterIsAtking.Remove(gameObject);
             }
 
 
@@ -145,6 +150,8 @@ public class Auto : MonoBehaviour
             {
                 animator.SetInteger("ComboStep", ++AtkCount);
                 animator.SetTrigger("CanAttack");
+                if(!GameDataMgr.Instance.monsterIsAtking.Contains(gameObject))
+                     GameDataMgr.Instance.monsterIsAtking.Add(gameObject);
                 atkt = Time.time;
                 atkDeltatime = Random.Range(0.5f, 1.8f);
             }
