@@ -1,0 +1,146 @@
+{
+  "Textures": {
+    "MainTex": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon05_D.T_MB1XinjiLemuMd10011Weapon05_D",
+    "PM_Diffuse": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon05_D.T_MB1XinjiLemuMd10011Weapon05_D",
+    "T_MB1XinjiLemuMd10011Weapon05_D": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon05_D.T_MB1XinjiLemuMd10011Weapon05_D",
+    "PM_Normals": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon05_N.T_MB1XinjiLemuMd10011Weapon05_N",
+    "Normal_Roughness_Metallic": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon05_N.T_MB1XinjiLemuMd10011Weapon05_N",
+    "PBRCubeMap": "Client/Content/Aki/Character/Role/CommonTexture/CharacterCubeMaps/T_Env_02_CUBE.T_Env_02_CUBE",
+    "T_Env_02_CUBE": "Client/Content/Aki/Character/Role/CommonTexture/CharacterCubeMaps/T_Env_02_CUBE.T_Env_02_CUBE",
+    "R_Noise_A_Mask": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon05_M.T_MB1XinjiLemuMd10011Weapon05_M",
+    "T_MB1XinjiLemuMd10011Weapon05_M": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon05_M.T_MB1XinjiLemuMd10011Weapon05_M",
+    "Second_RGB": "Client/Content/Aki/Effect/Texture/Tile/T_Tile_71003.T_Tile_71003",
+    "T_Tile_71003": "Client/Content/Aki/Effect/Texture/Tile/T_Tile_71003.T_Tile_71003",
+    "CommonNoiseMap": "Client/Content/Aki/Character/Role/CommonTexture/Monster/CommonNoise.CommonNoise",
+    "CommonNoise": "Client/Content/Aki/Character/Role/CommonTexture/Monster/CommonNoise.CommonNoise"
+  },
+  "Parameters": {
+    "BlendMode": 0,
+    "ShadingModel": 0,
+    "Colors": {
+      "MainTexColorTint": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "ShadowColor": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "EmissionColor": {
+        "R": 3.0,
+        "G": 3.0,
+        "B": 3.0,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "PBRCubemapColor": {
+        "R": 1.5,
+        "G": 1.5,
+        "B": 1.5,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "PBRSpecularColor_Test": {
+        "R": 5.0,
+        "G": 5.0,
+        "B": 5.0,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "NoiseUV": {
+        "R": 20.0,
+        "G": 8.0,
+        "B": 0.0,
+        "A": 0.0,
+        "Hex": "FFFF00"
+      },
+      "SecondTex_UVSwitch": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 0.0,
+        "A": 1.0,
+        "Hex": "000000"
+      },
+      "Second_UV": {
+        "R": 2.0,
+        "G": 1.0,
+        "B": 0.4,
+        "A": 0.0,
+        "Hex": "FFFFAA"
+      },
+      "Second_ColorTint": {
+        "R": 12.0,
+        "G": 9.563902,
+        "B": 3.94453,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "Second_Refine": {
+        "R": 2.042658,
+        "G": 3.0,
+        "B": 1.085316,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "SDFColor": {
+        "R": 10.0,
+        "G": 9.257413,
+        "B": 6.354166,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      }
+    },
+    "Scalars": {
+      "PBRHardSpecWidth_Test": 0.09,
+      "PBRHardSpeSmooth_Test": 0.05,
+      "NoiseStrength": 1.0,
+      "Second_NoiseStrength": 0.15,
+      "FlowEffectEdge_Strength": 0.0,
+      "SDFCircleScaleX": 8.376864,
+      "SDFCircleScaleY": 9.732956,
+      "SDFCirclePositionX": 0.728572,
+      "SDFCirclePositionY": 0.233333,
+      "SDFCircleScale": 1.2766,
+      "SDFCircleWidth": -0.645565,
+      "PolarTilingMax": 1.6,
+      "SDFCircleIntensity": 1.0,
+      "SDFNormalInt": 1.704101,
+      "SDFTimeSpeed": 0.756839,
+      "RefractionDepthBias": 0.0
+    },
+    "Switches": {
+      "UseNormalTexture": true,
+      "UsePBR": true,
+      "UsePBRMask": true,
+      "UseEffectMaterial": true,
+      "UseNoise": true,
+      "UseSecond": true,
+      "UseFlowEffectEdge": true
+    },
+    "Properties": {
+      "bHasStaticPermutationResource": true,
+      "BasePropertyOverrides": {
+        "bEnableSeparateTranslucency": true,
+        "ShadingModel": "MSM_ToonCommon",
+        "OpacityMaskClipValue": 0.3333,
+        "RenderQueue": 180,
+        "bCastRayTracedShadows": true,
+        "bIsOnlyForSkeletalMesh": true,
+        "bUsedWithSkeletalMesh": true,
+        "bUsedWithMorphTargets": true
+      }
+    },
+    "HasTopDiffuse": true,
+    "HasTopNormals": false,
+    "HasTopSpecularMasks": false,
+    "HasTopEmissive": false,
+    "IsTranslucent": false,
+    "IsNull": false
+  }
+}

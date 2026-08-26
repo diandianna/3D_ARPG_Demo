@@ -9,6 +9,8 @@ public class GameDataMgr:MonoBehaviour
     private static GameDataMgr instance;
     public static GameDataMgr Instance=>instance;
 
+    public string acountName;
+
     public PlayerData playerData;/* = new PlayerData();*/
     public PlayerData playerData2;
     public PlayerData playerData3;
@@ -18,7 +20,10 @@ public class GameDataMgr:MonoBehaviour
     public GameObject possessionCharacter;
     public bool isPossession = false;
 
+    public bool playerDeath = false;
+    public bool playerHurting = false;
     public List<GameObject> monsters = new List<GameObject>();
+    public List<GameObject> possessedMonsters = new List<GameObject>();
 
     public bool playerIsAtking = false;
     public List<GameObject> monsterIsAtking = new List<GameObject>();
@@ -67,9 +72,9 @@ public class GameDataMgr:MonoBehaviour
 
     public float PossessionTimeMult()
     {
-        if (soulIntegrity >= 70) return 1f;
-        if (soulIntegrity >= 30) return 0.5f;
-        return 0.25f;
+        if (soulIntegrity >= 70) return 5f;
+        if (soulIntegrity >= 30) return 10f;
+        return 20f;
     }
 
     public void ClearAllMonster()
@@ -79,5 +84,13 @@ public class GameDataMgr:MonoBehaviour
             Destroy(mons);
         }
         monsters.Clear();
+    }
+
+    public GameObject GetMonsterByID(int id)
+    {
+        foreach(var m in monsters)
+            if (m != null && m.GetComponent<MonsterData>().monsterid == id) 
+                return m;
+        return null;
     }
 }

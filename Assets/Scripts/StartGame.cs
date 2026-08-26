@@ -8,7 +8,7 @@ public class StartGame : MonoBehaviour
 {
     public CanvasGroup canvasGroup;
     public Image image;
-    public float duration = 2f;
+    public float duration = 1f;
     public float timer = 0f;
     public bool hide = false;
     public bool once = false;
@@ -75,7 +75,7 @@ public class StartGame : MonoBehaviour
 
     IEnumerator WaitSeconds()
     {
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(0.5f);
         hide = true;
         timer = 0;
     }

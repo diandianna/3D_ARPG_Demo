@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Range_Detaction : MonoBehaviour
 {
-    // Start is called before the first frame update
+    float distance = 100f;
+    float newDistance = 100f;
+
     void Start()
     {
         
@@ -13,7 +15,7 @@ public class Range_Detaction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+         
     }
     private void OnTriggerStay(Collider other)
     {
@@ -22,7 +24,22 @@ public class Range_Detaction : MonoBehaviour
             if (transform.parent.gameObject.GetComponent<Auto>() != null)
             {
                 Debug.Log("发现玩家");
-                transform.parent.gameObject.GetComponent<Auto>().targetPos = other.gameObject.transform;
+                newDistance = Vector3.Distance(other.gameObject.transform.position, gameObject.transform.position);
+                if (newDistance < distance)
+                {
+                    transform.parent.gameObject.GetComponent<Auto>().targetPos = other.gameObject.transform;
+                    distance = newDistance;
+                }
+            }
+            else if (transform.parent.gameObject.GetComponent<BossAuto>() != null)
+            {
+                Debug.Log("发现玩家");
+                newDistance = Vector3.Distance(other.gameObject.transform.position, gameObject.transform.position);
+                if (newDistance < distance)
+                {
+                    transform.parent.gameObject.GetComponent<BossAuto>().targetPos = other.gameObject.transform;
+                    distance = newDistance;
+                }
             }
         }
     }

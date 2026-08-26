@@ -1,0 +1,123 @@
+{
+  "Textures": {
+    "MainTex": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon01_D.T_MB1XinjiLemuMd10011Weapon01_D",
+    "PM_Diffuse": "Client/Content/Aki/Render/Common/T_DefaultColorWhite_D.T_DefaultColorWhite_D",
+    "T_MB1XinjiLemuMd10011Weapon01_D": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon01_D.T_MB1XinjiLemuMd10011Weapon01_D",
+    "PM_Normals": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon01_N.T_MB1XinjiLemuMd10011Weapon01_N",
+    "Normal_Roughness_Metallic": "Client/Content/Aki/Character/Monster/Boss/MB1XinjiLemuMd10011/Model/Weapon/T_MB1XinjiLemuMd10011Weapon01_N.T_MB1XinjiLemuMd10011Weapon01_N",
+    "PBRCubeMap": "Client/Content/Aki/Character/Role/CommonTexture/CharacterCubeMaps/T_Env_02_CUBE.T_Env_02_CUBE",
+    "T_Env_02_CUBE": "Client/Content/Aki/Character/Role/CommonTexture/CharacterCubeMaps/T_Env_02_CUBE.T_Env_02_CUBE",
+    "R_Noise_A_Mask": "Client/Content/Aki/Render/Common/T_DefaultMaskGreen_M.T_DefaultMaskGreen_M",
+    "T_DefaultMaskGreen_M": "Client/Content/Aki/Render/Common/T_DefaultMaskGreen_M.T_DefaultMaskGreen_M",
+    "Second_RGB": "Client/Content/Aki/Render/Common/T_DefaultColorWhite_D.T_DefaultColorWhite_D",
+    "T_DefaultColorWhite_D": "Client/Content/Aki/Render/Common/T_DefaultColorWhite_D.T_DefaultColorWhite_D",
+    "CommonNoiseMap": "Client/Content/Aki/Character/Role/CommonTexture/Monster/CommonNoise.CommonNoise",
+    "CommonNoise": "Client/Content/Aki/Character/Role/CommonTexture/Monster/CommonNoise.CommonNoise"
+  },
+  "Parameters": {
+    "BlendMode": 0,
+    "ShadingModel": 0,
+    "Colors": {
+      "MainTexColorTint": {
+        "R": 1.0,
+        "G": 1.0,
+        "B": 1.0,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      },
+      "ShadowColor": {
+        "R": 0.632416,
+        "G": 0.264831,
+        "B": 1.0,
+        "A": 0.0,
+        "Hex": "D18DFF"
+      },
+      "EmissionColor": {
+        "R": 3.0,
+        "G": 3.0,
+        "B": 3.0,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "PBRCubemapColor": {
+        "R": 2.0,
+        "G": 2.0,
+        "B": 2.0,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "PBRSpecularColor_Test": {
+        "R": 5.0,
+        "G": 5.0,
+        "B": 5.0,
+        "A": 0.0,
+        "Hex": "FFFFFF"
+      },
+      "Second_UV": {
+        "R": 5.0,
+        "G": 5.0,
+        "B": 0.2,
+        "A": 0.1,
+        "Hex": "19FFFF7C"
+      },
+      "Second_ColorTint": {
+        "R": 0.0,
+        "G": 0.0,
+        "B": 0.0,
+        "A": 0.0,
+        "Hex": "000000"
+      },
+      "SDFColor": {
+        "R": 10.0,
+        "G": 9.257413,
+        "B": 6.354166,
+        "A": 1.0,
+        "Hex": "FFFFFF"
+      }
+    },
+    "Scalars": {
+      "NormalStrength": 1.0,
+      "PBRHardSpecWidth_Test": 0.08,
+      "PBRHardSpeSmooth_Test": 0.05,
+      "Second_NoiseStrength": 0.15,
+      "FlowEffectEdge_Strength": 0.2,
+      "SDFCircleScaleX": 8.376864,
+      "SDFCircleScaleY": 9.732956,
+      "SDFCirclePositionX": 0.728572,
+      "SDFCirclePositionY": 0.233333,
+      "SDFCircleScale": 1.2766,
+      "SDFCircleWidth": -0.645565,
+      "PolarTilingMax": 1.6,
+      "SDFCircleIntensity": 1.0,
+      "SDFNormalInt": 1.704101,
+      "SDFTimeSpeed": 0.756839,
+      "RefractionDepthBias": 0.0
+    },
+    "Switches": {
+      "UseNormalTexture": true,
+      "UsePBR": true,
+      "UsePBRMask": true,
+      "UseSecond": true,
+      "UseFlowEffectEdge": true
+    },
+    "Properties": {
+      "bHasStaticPermutationResource": true,
+      "BasePropertyOverrides": {
+        "bEnableSeparateTranslucency": true,
+        "ShadingModel": "MSM_ToonCommon",
+        "OpacityMaskClipValue": 0.3333,
+        "RenderQueue": 180,
+        "bCastRayTracedShadows": true,
+        "bIsOnlyForSkeletalMesh": true,
+        "bUsedWithSkeletalMesh": true,
+        "bUsedWithMorphTargets": true
+      }
+    },
+    "HasTopDiffuse": true,
+    "HasTopNormals": false,
+    "HasTopSpecularMasks": false,
+    "HasTopEmissive": false,
+    "IsTranslucent": false,
+    "IsNull": false
+  }
+}

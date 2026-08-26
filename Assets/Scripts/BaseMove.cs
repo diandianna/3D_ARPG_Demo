@@ -30,18 +30,16 @@ public class BaseMove : MonoBehaviour
     {
         //GameDataMgr.Instance.playerPos = gameObject.transform.position;
         //GameDataMgr.Instance.playerRot = gameObject.transform.eulerAngles;
-
-
-
-        if(BulletTimeMgr.Instance.sphereIsMoving)
+        if (GameDataMgr.Instance.playerHurting) return;
+        if (GameDataMgr.Instance.playerDeath)
         {
+            horizontal = 0;
+            vertical = 0;
             return;
         }
+        if(BulletTimeMgr.Instance.sphereIsMoving)return;
+        if (GameDataMgr.Instance.IsCurrentControl(gameObject) == false)return;
 
-        if (GameDataMgr.Instance.IsCurrentControl(gameObject) == false)
-        {
-            return;
-        }
 
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -50,7 +48,7 @@ public class BaseMove : MonoBehaviour
 
         // 攻击期间不读输入、不旋转、不设动画参数
         // isAttacking 由 LU_Attack.ClearAttackState()（Animation Event）置 false
-        if (!GameDataMgr.Instance.borned || LU_Attack.Instance.isAttacking)
+        if (!GameDataMgr.Instance.borned || GetComponent<LU_Attack>().isAttacking)
             return;
 
         horizontal = Input.GetAxisRaw("Horizontal");
@@ -68,12 +66,14 @@ public class BaseMove : MonoBehaviour
     /// </summary>
     private void LateUpdate()
     {
-        if(GameDataMgr.Instance.IsCurrentControl(gameObject) == false)
+        if (GameDataMgr.Instance.playerDeath) return;
+        if(GameDataMgr.Instance.playerHurting) return;
+        if (GameDataMgr.Instance.IsCurrentControl(gameObject) == false)
         {
             return;
         }
 
-        if (!GameDataMgr.Instance.borned || LU_Attack.Instance.isAttacking)
+        if (!GameDataMgr.Instance.borned ||GetComponent<LU_Attack>().isAttacking)
             return;
 
         DoTranslate();
@@ -106,6 +106,12 @@ public class BaseMove : MonoBehaviour
     /// </summary>
     public void SetMoveAnimation()
     {
+        if (GameDataMgr.Instance.playerDeath)
+        {
+            // 只播死亡动画自带的位移（播完就归零），不再叠加其他
+            transform.position += animator.deltaPosition;
+            return;
+        }
         if (horizontal != 0 || vertical != 0)
         {
             // 1f 满足 Stand→Run（Speed > 0），同时不满足 Run→Run_End（Speed < 1），
@@ -176,12 +182,12 @@ public class BaseMove : MonoBehaviour
         {
             AnimatorTransitionInfo trans = animator.GetAnimatorTransitionInfo(0);
             float t = Mathf.Clamp01(trans.normalizedTime);
-            transform.Translate(Vector3.forward * Movespeed * t * Time.deltaTime);
+            transform.position += MoveBlocked(transform.forward * Movespeed * t * Time.deltaTime);
         }
         else
         {
             // 已经在 Run 等移动状态中 → 正常满速平移
-            transform.Translate(Vector3.forward * Movespeed * Time.deltaTime);
+            transform.position += MoveBlocked(transform.forward * Movespeed * Time.deltaTime);
         }
     }
 
@@ -238,4 +244,60 @@ public class BaseMove : MonoBehaviour
         StopCoroutine(stopCoroutine);
     }
 
+    Vector3 MoveBlocked(Vector3 delta)
+    {
+        PushOutOfMonsters();
+
+        if (delta.sqrMagnitude < 0.0001f) return delta;
+
+        Vector3 bottom = transform.position + Vector3.up * 0.2f;
+        Vector3 top = transform.position + Vector3.up * 1.4f;
+        float step = delta.magnitude;
+
+        if(Physics.CapsuleCast(bottom,top,0.4f,delta.normalized,
+            out RaycastHit hit, step+0.2f , ~0, QueryTriggerInteraction.Ignore))
+        {
+            float allowed = Mathf.Max(0, hit.distance - 0.05f);
+            return delta.normalized * Mathf.Min(step, allowed);
+        }
+        return delta;
+
+    }
+
+    private void OnAnimatorMove()
+    {
+        if (!GameDataMgr.Instance.IsCurrentControl(gameObject))
+        {
+            transform.position += animator.deltaPosition;
+            transform.rotation *= animator.deltaRotation;
+        }
+        else
+        {
+            transform.position += MoveBlocked(animator.deltaPosition);
+        }
+    }
+
+    void PushOutOfMonsters()
+    {
+        Vector3 bottom = transform.position + Vector3.up * 0.2f;
+        Vector3 top = transform.position + Vector3.up * 1.4f;
+
+        Collider[] cols =Physics.OverlapCapsule(bottom,top,0.4f,~0,QueryTriggerInteraction.Ignore);
+        foreach(Collider c in cols)
+        {
+            if (c.transform == transform) continue;
+            if (c.transform.IsChildOf(transform)) continue;
+            if (c.isTrigger) continue;
+
+            Vector3 bodyCenter = transform.position + Vector3.up * 0.8f;
+            Vector3 closest = c.ClosestPoint(bodyCenter);
+            Vector3 pushDir = bodyCenter - closest;
+            float distance = pushDir.magnitude;
+            if(distance >0.0001f && distance < 0.4f)
+            {
+                pushDir.y = 0;
+                transform.position += pushDir.normalized * (0.4f - distance);
+            }
+        }
+    }
 }

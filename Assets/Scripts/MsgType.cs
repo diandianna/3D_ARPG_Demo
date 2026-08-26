@@ -15,11 +15,20 @@ using UnityEngine;
         MoveSync = 6,//移动同步
         HeartBeat = 7,//心跳消息
 
-
+        Hurt = 95,
+        VisitorHurt = 96,//访客受伤消息（受击和死亡动画都通过这个）
+        VisitorAtk = 97,//访客攻击消息（攻击动画）
         MultiSync = 98,//多人信息（位置，怪物数据等等）同步
         Multiplayer = 99,//多人联机请求消息
         MonsterSync = 100,//怪物同步消息
-    }
+
+        Possess = 101,
+        PossessOK = 102,
+        PossessState = 103,
+
+        PlayerAnimation = 200,
+        MonsterAnimation = 201
+}
 
     /*
      *客户端发送

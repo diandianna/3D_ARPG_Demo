@@ -10,13 +10,11 @@ public class Auto : MonoBehaviour
 {
     public MonsterData monsterData;
     public Transform targetPos;
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     public Animator animator;
 
     public Image hpImg;
     public GameObject hpbkImg;
-
-    public int hp;
 
     public float hurtDeltaTime = 0.3f;
     public float hurtTime;
@@ -29,9 +27,12 @@ public class Auto : MonoBehaviour
     public float atkt = 0;
     public int AtkCount = -1;
 
+    public Transform hateTarget;   // 仇恨目标，优先级高于 targetPos（被附身怪打中后转移过来）
+    public Transform curTarget;   // 本帧真正追的目标
+
     public List<GameObject> hurtobj = new List<GameObject>();
 
-    private void Awake()
+    public virtual void Awake()
     {
         monsterData = gameObject.AddComponent<MonsterData>();
         GameDataMgr.Instance.monsters.Add(gameObject);
@@ -51,11 +52,8 @@ public class Auto : MonoBehaviour
 
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-
-        hp = monsterData.hp;
-
         if (SyncMgr.Instance.isRoom && !SyncMgr.Instance.isHost)
             return;
 
@@ -64,13 +62,11 @@ public class Auto : MonoBehaviour
             hpbkImg.gameObject.transform.LookAt(Camera.main.transform.position);
         }
 
-        if (GameDataMgr.Instance.IsCurrentControl(gameObject))
+        if (GameDataMgr.Instance.IsCurrentControl(gameObject)||GameDataMgr.Instance.possessedMonsters.Contains(gameObject))
         {
             //停止nav自动寻路
             agent.isStopped = true;
             animator.SetInteger("LorRMove", 0);
-            Debug.Log("当前控制的对象是怪物，AI不执行");
-            
             return;
         }
         else agent.isStopped = false;
@@ -79,13 +75,18 @@ public class Auto : MonoBehaviour
 
         hpImg.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1.5f * monsterData.hp / monsterData.maxhp);
 
-        if (targetPos == null) { OnIdle(); transform.LookAt(targetPos); return;}
-        if (Vector3.Distance(transform.position, targetPos.position) > 2.8f){
-            OnChase();
-            transform.LookAt(targetPos);
+        curTarget = hateTarget != null ? hateTarget : targetPos;
+        if (curTarget == null)
+        {
+            OnIdle();
             return;
         }
-        OnAttack();
+        if (Vector3.Distance(transform.position, curTarget.position) > 2.8f){
+            OnChase();
+            transform.LookAt(curTarget);
+            return;
+        }
+        else OnAttack();
 
 
 
@@ -102,16 +103,19 @@ public class Auto : MonoBehaviour
 
     public virtual void OnIdle()
     {
-
+        if (AtkCount != -1)                                    // 之前正在攻击
+            SocketMgr.Instance.SendMonsterAnimation(2, -1, monsterData.monsterid, transform.position, transform.eulerAngles.y);  // 停止信号
     }
 
     public virtual void OnChase()
-    { 
-       AtkCount = 0;
+    {
+        if (AtkCount != -1)                                    // 之前正在攻击
+            SocketMgr.Instance.SendMonsterAnimation(2, -1, monsterData.monsterid, transform.position, transform.eulerAngles.y);  // 停止信号
+        AtkCount = 0;
        agent.speed = 3f;
        animator.SetFloat("Speed", 1);
-       agent.SetDestination(targetPos.position);
-        
+       agent.SetDestination(curTarget.position);
+       animator.SetInteger("LorRMove", 0);
     }
 
     public virtual void OnAttack()
@@ -125,7 +129,7 @@ public class Auto : MonoBehaviour
                 GameDataMgr.Instance.monsterIsAtking.Add(gameObject);
         }
 
-        if (Vector3.Distance(transform.position, targetPos.position) < 2.8f)
+        if (Vector3.Distance(transform.position, curTarget.position) < 2.8f)
         {
             randLorRMove = Random.Range(-1, 1);
             if (randLorRMove > 0)
@@ -150,8 +154,7 @@ public class Auto : MonoBehaviour
             {
                 animator.SetInteger("ComboStep", ++AtkCount);
                 animator.SetTrigger("CanAttack");
-                if(!GameDataMgr.Instance.monsterIsAtking.Contains(gameObject))
-                     GameDataMgr.Instance.monsterIsAtking.Add(gameObject);
+                SocketMgr.Instance.SendMonsterAnimation(0, AtkCount,monsterData.monsterid, transform.position, transform.eulerAngles.y);
                 atkt = Time.time;
                 atkDeltatime = Random.Range(0.5f, 1.8f);
             }
@@ -171,6 +174,7 @@ public class Auto : MonoBehaviour
         animator.SetTrigger("Hurt");
         SocketMgr.Instance.Send(5, BitConverter.GetBytes(GameDataMgr.Instance.monsters.IndexOf(gameObject)));
     }
+
     public virtual void OnDeath()
     {
         print("敌人死亡");
@@ -183,27 +187,22 @@ public class Auto : MonoBehaviour
     {
 
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (monsterData.hp <= 0) return;
-
-    //    if (other.CompareTag("PlayerAtk"))
-    //    {
-    //        if (Time.time - hurtTime >= hurtDeltaTime)
-    //        {
-    //            if (hurtobj.Contains(other.gameObject)) return;
-    //            hurtTime = Time.time;
-    //            hurtobj.Add(other.gameObject);
-    //            OnHurt();
-    //        }
-               
-    //    }
-    //}
 
     public IEnumerator ClearObj(float time)
     {
 
         yield return new WaitForSeconds(time);
         Destroy(gameObject);
+    }
+
+    public void MonsterAttack_Start()
+    {
+        if (!GameDataMgr.Instance.monsterIsAtking.Contains(gameObject))
+            GameDataMgr.Instance.monsterIsAtking.Add(gameObject);
+    }
+    public void MonsterAttack_End()
+    {
+       if(GameDataMgr.Instance.monsterIsAtking.Contains(gameObject))
+            GameDataMgr.Instance.monsterIsAtking.Remove(gameObject);
     }
 }

@@ -27,6 +27,11 @@ public class SyncMgr : MonoBehaviour
     Dictionary<string, Vector3> targetPos = new Dictionary<string, Vector3>();
     Dictionary<string, float> targetYaw = new Dictionary<string, float>();
     Dictionary<string, Vector3> lastPos = new Dictionary<string, Vector3>();
+
+    Dictionary<string, PlayerData> visitorsData = new Dictionary<string, PlayerData>();
+
+
+
     private void Awake()
     {
         Instance = this;
@@ -77,8 +82,9 @@ public class SyncMgr : MonoBehaviour
         {
             return;
         }
+        GameObject player = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Lu"), vector3, Quaternion.identity);
        // print("Creating");
-       visitors.Add(name ,GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Lu"),vector3,Quaternion.identity));
+       visitors.Add(name ,player);
         lastPos[name] = vector3;
         //StartCoroutine(LerpPos(name));
         //StartCoroutine(LerpRot(name));
@@ -139,7 +145,7 @@ public class SyncMgr : MonoBehaviour
             {
                 MonsterData monsterData = monsobj.GetComponent<MonsterData>();
                 BitConverter.GetBytes(monsterData.monsterid).CopyTo(response, index);index += 4;//怪物id
-                BitConverter.GetBytes(0).CopyTo(response, index);index += 4;//怪物类型，暂时写死
+                BitConverter.GetBytes(monsobj.GetComponent<MonsterData>().monsterTypeid).CopyTo(response, index);index += 4;//怪物类型，暂时写死
                 BitConverter.GetBytes(monsterData.transform.position.x).CopyTo(response, index);index += 4;//位置x
                 BitConverter.GetBytes(monsterData.transform.position.y).CopyTo(response, index);index += 4;//y
                 BitConverter.GetBytes(monsterData.transform.position.z).CopyTo(response, index);index += 4;//z

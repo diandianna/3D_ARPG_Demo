@@ -30,13 +30,13 @@ public class UIMgr : MonoBehaviour
     {
         string panelName = typeof(T).Name;
 
-        if (panels.ContainsKey(panelName))
+        if (panels.ContainsKey(panelName) && panels[panelName] != null)
         {
             panels[panelName].gameObject.SetActive(true);
             StartCoroutine(ShowPanelRoutine(panels[panelName]));
             return panels[panelName];
         }
-
+        if(panels.ContainsKey(panelName))panels.Remove(panelName);
         GameObject prefab = Resources.Load<GameObject>("Prefabs/Panel/" + panelName);
         if (prefab == null)
         {

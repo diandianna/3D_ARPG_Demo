@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class LU_Attack : MonoBehaviour
 {
-    private static LU_Attack instance;
-    public static LU_Attack Instance => instance;
 
     public float attackDelataTime = 0.25f; // 攻击间隔时间
 
@@ -34,7 +32,10 @@ public class LU_Attack : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        instance = this;
+        if(animator == null)
+        {
+            animator =gameObject.AddComponent<Animator>();
+        }
     }
 
     // Update is called once per frame
@@ -70,6 +71,7 @@ public class LU_Attack : MonoBehaviour
             GameDataMgr.Instance.playerIsAtking = false;
             ComboStep = 0;
             animator.SetInteger("ComboStep", 0);
+            DisableTrigger();
         }
         else
         {
@@ -87,9 +89,12 @@ public class LU_Attack : MonoBehaviour
                 //else
                 //    ComboStep++;
                 animator.SetInteger("ComboStep", ComboStep);
+                EnableTrigger();
                 isAttacking = true;
                 GameDataMgr.Instance.playerIsAtking = isAttacking;
                 animator.SetTrigger("CanAttack");
+                SocketMgr.Instance.SendPlayerAnimation(0, ComboStep);
+
 
                 // ResetState();
                 comboCoroutine = StartCoroutine(AttackComboArea());
@@ -132,6 +137,7 @@ public class LU_Attack : MonoBehaviour
                     isAttacking = true;
                     GameDataMgr.Instance.playerIsAtking = isAttacking;
                     animator.SetTrigger("CanAttack");
+                    SocketMgr.Instance.SendPlayerAnimation(0, ComboStep);
                 }
             }
             if(time - attackTime > attackDelataTime + 2f)
@@ -261,5 +267,14 @@ public class LU_Attack : MonoBehaviour
         if (triggerCollider != null)
             triggerCollider.enabled = false;
         Debug.Log("AtkTrigger: 关闭碰撞体");
+    }
+
+    public void hurtingStart()
+    {
+        GameDataMgr.Instance.playerHurting = true;
+    }
+    public void hurtingEnd()
+    {
+        GameDataMgr.Instance.playerHurting = false;
     }
 }

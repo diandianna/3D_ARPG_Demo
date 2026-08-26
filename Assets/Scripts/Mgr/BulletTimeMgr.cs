@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
@@ -26,7 +27,9 @@ public class BulletTimeMgr : MonoBehaviour
     //鼠标移动达到这个值时，切换锁定目标
     public int changeThreshold = 3;
 
+    public GameObject currentSphere;
     public bool sphereIsMoving = false;
+    public bool isIntercepted = false;
 
     GameObject sphere;
     private void Awake()
@@ -54,7 +57,7 @@ public class BulletTimeMgr : MonoBehaviour
                 BulletSeconds = maxBulletSeconds;
             }
         }
-        if (Input.GetKeyDown(KeyCode.E) && BulletSeconds>0)
+        if (Input.GetKey(KeyCode.E) && BulletSeconds > 0 )
         {
             if (GameDataMgr.Instance.isPossession&&!sphereIsMoving)
             {
@@ -68,6 +71,7 @@ public class BulletTimeMgr : MonoBehaviour
                 if (monster == gameObject) continue;
                 if (Vector3.Distance(monster.gameObject.transform.position, PlayerTrans.position) <= 15f)
                 {
+                    if (GameDataMgr.Instance.possessedMonsters.Contains(monster)) continue;
                     monsters.Add(monster);
                 }
             }
@@ -76,7 +80,7 @@ public class BulletTimeMgr : MonoBehaviour
                 LockImg.SetActive(true);
             }
         }
-        if (Input.GetKey(KeyCode.E) && BulletSeconds > 0)
+        if (Input.GetKey(KeyCode.E) && BulletSeconds > 0 && !GameDataMgr.Instance.isPossession)
         {
             IsBulletTime = true;
             Time.timeScale = 0.1f;
@@ -152,9 +156,11 @@ public class BulletTimeMgr : MonoBehaviour
         sphereCam.transform.position = PlayerTrans.position + Vector3.up * 0.5f + Vector3.right + Vector3.forward *-1;
         sphereCam.enabled = true;
         sphereCam.transform.SetParent(obj.transform);
+        currentSphere = obj;
 
         while (obj != null)
         {
+            if (isIntercepted) break;
             t += Time.unscaledDeltaTime;
             obj.transform.position = Vector3.Lerp(startPos, endPos, t);
             if(t>=1)
@@ -166,10 +172,39 @@ public class BulletTimeMgr : MonoBehaviour
         mainCam.enabled = true;
         sphereCam.enabled = false;
         sphereCam.transform.parent = null;
+        currentSphere = null;
+        if (isIntercepted)
+        {
+            isIntercepted = false;
+            ClearState();
+            sphereIsMoving = false;
+            Destroy(obj);
+            yield break;
+        }
 
         GameDataMgr.Instance.possessionCharacter = monsters[MonsterIndex];
         GameDataMgr.Instance.isPossession = true;
+        if (SyncMgr.Instance.isRoom && !GameDataMgr.Instance.possessedMonsters.Contains(monsters[MonsterIndex])&&!SyncMgr.Instance.isHost)
+        {
+            GameDataMgr.Instance.possessedMonsters.Add(monsters[MonsterIndex]);
+            int id = -1;
+            foreach(var m in MonsterSyncMgr.Instance.monsters)
+            {
+                if (m.Value == monsters[MonsterIndex])
+                {
+                    id=m.Key;
+                    break;
+                }
+            }
+            if (id < 0) yield break;
+            byte[] buffer = new byte[12];
+            BitConverter.GetBytes(SyncMgr.Instance.roomId).CopyTo(buffer, 0);
+            BitConverter.GetBytes(id).CopyTo(buffer,4);
+            BitConverter.GetBytes(1).CopyTo(buffer,8);
+            SocketMgr.Instance.Send(101, buffer);
+        }
         PlayerCamera.SetTarget(monsters[MonsterIndex].transform);
+        PossessionCosts.Instance.OnPossessStart();
 
         ClearState();
 
@@ -194,8 +229,10 @@ public class BulletTimeMgr : MonoBehaviour
         sphereCam.enabled = true;
         sphereCam.transform.SetParent(obj.transform);
 
+        currentSphere = obj;
         while (obj != null)
         {
+            if (isIntercepted) break;
             t += Time.unscaledDeltaTime;
             obj.transform.position = Vector3.Lerp(startPos, endPos, t);
             if (t >= 1)
@@ -207,15 +244,85 @@ public class BulletTimeMgr : MonoBehaviour
         mainCam.enabled = true;
         sphereCam.enabled = false;
         sphereCam.transform.parent = null;
+        currentSphere = null;
+        if (isIntercepted)
+        {
+            isIntercepted = false;
+            ClearState();
+            sphereIsMoving = false;
+            Destroy(obj);
+            yield break;
+        }
+
+        if (SyncMgr.Instance.isRoom&&!SyncMgr.Instance.isHost)
+        {
+            if (GameDataMgr.Instance.possessedMonsters.Contains(GameDataMgr.Instance.possessionCharacter))
+            {
+                int id = -1;
+                foreach (var m in MonsterSyncMgr.Instance.monsters)
+                {
+                    if (m.Value == GameDataMgr.Instance.possessionCharacter)
+                    {
+                        id = m.Key;
+                        break;
+                    }
+                }
+                if (id < 0) yield break;
+
+                byte[] buffer = new byte[12];
+                BitConverter.GetBytes(SyncMgr.Instance.roomId).CopyTo(buffer, 0);
+                BitConverter.GetBytes(id).CopyTo(buffer, 4);
+                BitConverter.GetBytes(0).CopyTo(buffer, 8);
+                SocketMgr.Instance.Send(101, buffer);
+                GameDataMgr.Instance.possessedMonsters.Remove(GameDataMgr.Instance.possessionCharacter);
+            }
+        }
+        if(GameDataMgr.Instance.possessionCharacter != null)
+        {
+            Transform pc =GameDataMgr.Instance.possessionCharacter.transform;
+            foreach(var m in GameDataMgr.Instance.monsters)
+            {
+                Auto a = m != null ? m.GetComponent<Auto>() : null;
+                if (a != null && a.hateTarget == pc) 
+                {
+                    a.hateTarget = null;
+                }
+            }
+        }
 
         GameDataMgr.Instance.possessionCharacter = null;
         GameDataMgr.Instance.isPossession = false;
         PlayerCamera.SetTarget(GameDataMgr.Instance.mainCharacter.transform);
+        PossessionCosts.Instance.OnPossessEnd();
 
         ClearState();
 
         sphereIsMoving = false;
         Destroy(obj);
+    }
+
+
+    public void RollbackPossession()
+    {
+        if (GameDataMgr.Instance.possessionCharacter != null)
+            GameDataMgr.Instance.possessedMonsters.Remove(GameDataMgr.Instance.possessionCharacter);
+        GameDataMgr.Instance.possessionCharacter.GetComponent<Auto>().hateTarget = null;
+        if (GameDataMgr.Instance.possessionCharacter != null) 
+        {
+            Transform pc = GameDataMgr.Instance.possessionCharacter.transform;
+            foreach(var m in GameDataMgr.Instance.monsters)
+            {
+                Auto a = m != null ? m.GetComponent<Auto>() : null;
+                if (a != null && a.hateTarget == pc)
+                {
+                    a.hateTarget = null;
+                }
+            }
+        }
+        
+        GameDataMgr.Instance.isPossession = false;
+        PlayerCamera.SetTarget(GameDataMgr.Instance.mainCharacter.transform);
+        PossessionCosts.Instance.OnPossessEnd();   // 和 SphereMove 里的 OnPossessStart 配对
     }
 
     public void ClearState()
@@ -234,5 +341,10 @@ public class BulletTimeMgr : MonoBehaviour
         Time.timeScale = timescale;
         yield return new WaitForSecondsRealtime(waittime);
         Time.timeScale = 1;
+    }
+
+    public void OnIntercepted()
+    {
+        isIntercepted = true;
     }
 }

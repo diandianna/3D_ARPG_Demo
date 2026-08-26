@@ -381,7 +381,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -422,7 +422,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -458,7 +458,7 @@ Animator:
   m_GameObject: {fileID: 8303683541483695968}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: bd4cb174794f68748a399467c0a60a5c, type: 3}
-  m_Controller: {fileID: 9100000, guid: d99b39f9dbd026c4f90688c381c659ff, type: 2}
+  m_Controller: {fileID: 9100000, guid: 87d5cc0d7a8933b48a3a313a46005423, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -505,10 +505,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterData: {fileID: 0}
   targetPos: {fileID: 0}
+  agent: {fileID: 0}
   animator: {fileID: 0}
   hpImg: {fileID: 5726507808739510283}
   hpbkImg: {fileID: 5329101319135214805}
-  hp: 0
   hurtDeltaTime: 0.3
   hurtTime: 0
   atkDeltatime: 0.3
@@ -518,6 +518,8 @@ MonoBehaviour:
   skillt: 0
   atkt: 0
   AtkCount: -1
+  hateTarget: {fileID: 0}
+  curTarget: {fileID: 0}
   hurtobj: []
 --- !u!136 &2415534462861883163
 CapsuleCollider:
@@ -609,7 +611,7 @@ MonoBehaviour:
   SpawnAttack2_1: {fileID: 0}
   SpawnAttack2_2: {fileID: 0}
   lastIsAttacking: 0
-  triggerCollider: {fileID: 0}
+  triggerCollider: {fileID: 5379836339948720855}
 --- !u!4 &8680490933173941722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e4ba7b4225382b4fb38ed40fc049b6b, type: 3}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -95,7 +96,7 @@ public class PlayerData
     {
         //第一个字节是数据类型标识，前面已经取出来判断过了
         //第二个字节是请求结果，1成功，0失败
-        int index = 8;
+        int index = 12;
         level = BitConverter.ToInt32(updataPlayerData, index);
         index += 4;
         levelNum = BitConverter.ToInt32(updataPlayerData, index);
@@ -118,6 +119,10 @@ public class PlayerData
         index += 4;
         money2 = BitConverter.ToInt32(updataPlayerData, index);
         index += 4;
+
+        int len = BitConverter.ToInt32(updataPlayerData, index); index += 4;
+        string name = Encoding.UTF8.GetString(updataPlayerData,index,len);
+        GameDataMgr.Instance.acountName = name;
         return;
     }
 
@@ -143,5 +148,18 @@ public class PlayerData
     public  void ChangeHp(int num)
     {
         this.hp += num;
+        if (hp <= 0) 
+        {
+           Animator animator = GameDataMgr.Instance.mainCharacter.GetComponent<Animator>();
+            if(animator != null)
+            {
+                animator.SetBool("Death", true);
+                GameDataMgr.Instance.playerDeath = true;
+            }
+        }
+        else if (hp > MaxHp)
+        {
+            hp = MaxHp;
+        }
     }
 }
