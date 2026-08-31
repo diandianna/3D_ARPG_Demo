@@ -34,6 +34,7 @@ public class BasePanel : MonoBehaviour
 
     public virtual IEnumerator ShowPanel()
     {
+        AudioManager.Instance.PlayUIClick();
         while (canvasGroup.alpha < 1)
         {
             canvasGroup.alpha += Time.deltaTime;

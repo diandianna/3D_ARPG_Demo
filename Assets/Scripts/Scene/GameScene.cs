@@ -26,5 +26,6 @@ public class GameScene : MonoBehaviour
     private void Start()
     {
         BulletTimeMgr.Instance.PlayerTrans = GameDataMgr.Instance.mainCharacter.transform;
+        AudioManager.Instance.PlayBGM(AudioManager.Instance.gameBgm);
     }
 }

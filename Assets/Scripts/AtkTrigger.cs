@@ -131,7 +131,7 @@ public class AtkTrigger : MonoBehaviour
                 SocketMgr.Instance.Send(97, response);
 
             }
-            else hitAuto.OnHurt();
+            else { AudioManager.Instance.PlayHit(hitAuto.transform.position); hitAuto.OnHurt(); }
         }
         //怪物攻击玩家
         else if (CompareTag("MonsterAtk") && other.CompareTag("Player"))
@@ -144,6 +144,7 @@ public class AtkTrigger : MonoBehaviour
             hitList.Add(other.gameObject);
             Debug.Log("MonsterAtk触发了玩家");
 
+            AudioManager.Instance.PlayHurt(other.transform.position);
             other.gameObject.GetComponent<Animator>().SetTrigger("Hurt");
             MonsterData Data = transform.gameObject.GetComponentInParent<MonsterData>();
             int reallyDamage = Data.atkNum-

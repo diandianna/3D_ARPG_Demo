@@ -258,6 +258,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a144f18f1e8a71949a9ea43fafe84769, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a144f18f1e8a71949a9ea43fafe84769, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a144f18f1e8a71949a9ea43fafe84769, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a144f18f1e8a71949a9ea43fafe84769, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -296,6 +308,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a144f18f1e8a71949a9ea43fafe84769, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a144f18f1e8a71949a9ea43fafe84769, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8214279626927606844, guid: a144f18f1e8a71949a9ea43fafe84769, type: 3}
       propertyPath: m_TagString
@@ -427,6 +443,8 @@ MonoBehaviour:
   combo: 0
   lastCombo: 0
   isAttacking: 0
+  dashBoxHalfExtents: {x: 0.8, y: 1.2, z: 2}
+  dashCastExtra: 3
 --- !u!136 &5880257701893918410
 CapsuleCollider:
   m_ObjectHideFlags: 0

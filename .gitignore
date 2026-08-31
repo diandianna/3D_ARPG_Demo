@@ -73,3 +73,39 @@ Thumbs.db
 
 # ===== 第三方资产包（体积大 + 含 >100MB 文件，GitHub 拒收，本地保留）=====
 /Assets/Toon Fantasy Nature/
+
+# ===== 大体积资源目录（整包不入库，本地保留；GitHub 靠 README + 视频展示）=====
+/Assets/Texture/
+/Assets/Terrain Assets/
+/Assets/Virtual Interior 2/
+/Assets/ArtRes/Animation/
+/Assets/ArtRes/Audio/
+/Assets/ArtRes/Character/JunVRC_11_2/
+/Assets/Scenes/Fantasy Environment part2_day/
+/Assets/Scenes/Fantasy Environment part2_night/
+/Assets/New Terrain.asset
+
+# ===== 其余大体积文件类型（图片/音频/模型/光照烘焙）=====
+*.jpg
+*.jpeg
+*.exr
+*.hdr
+*.bmp
+*.wav
+*.mp3
+*.ogg
+*.aif
+*.flac
+*.obj
+*.blend
+*.lighting
+*.lighting.meta
+
+# ===== 第三方资源包整包（Fantasy Environment 环境 / 旧版后期处理；贴图模型已在上方 ignore）=====
+/Assets/OBJECT/
+/Assets/Effects/
+/Assets/ani/
+/Assets/Sound/
+/Assets/Shaders/
+/Assets/PostProcessing/
+/Assets/_TerrainAutoUpgrade/

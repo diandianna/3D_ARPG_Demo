@@ -14,7 +14,7 @@ public class BaseMove : MonoBehaviour
     float stopDelay = 0.1f;
     Coroutine stopCoroutine;
 
-    public float Movespeed;
+    public float Movespeed = 30f;
 
     public float rotateSpeed;
 

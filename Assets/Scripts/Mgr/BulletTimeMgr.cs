@@ -204,6 +204,7 @@ public class BulletTimeMgr : MonoBehaviour
             SocketMgr.Instance.Send(101, buffer);
         }
         PlayerCamera.SetTarget(monsters[MonsterIndex].transform);
+        AudioManager.Instance.PlayPossessIn();
         PossessionCosts.Instance.OnPossessStart();
 
         ClearState();
@@ -293,6 +294,7 @@ public class BulletTimeMgr : MonoBehaviour
         GameDataMgr.Instance.possessionCharacter = null;
         GameDataMgr.Instance.isPossession = false;
         PlayerCamera.SetTarget(GameDataMgr.Instance.mainCharacter.transform);
+        AudioManager.Instance.PlayPossessOut();
         PossessionCosts.Instance.OnPossessEnd();
 
         ClearState();
@@ -322,6 +324,7 @@ public class BulletTimeMgr : MonoBehaviour
         
         GameDataMgr.Instance.isPossession = false;
         PlayerCamera.SetTarget(GameDataMgr.Instance.mainCharacter.transform);
+        AudioManager.Instance.PlayPossessOut();
         PossessionCosts.Instance.OnPossessEnd();   // 和 SphereMove 里的 OnPossessStart 配对
     }
 

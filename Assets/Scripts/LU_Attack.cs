@@ -89,7 +89,6 @@ public class LU_Attack : MonoBehaviour
                 //else
                 //    ComboStep++;
                 animator.SetInteger("ComboStep", ComboStep);
-                EnableTrigger();
                 isAttacking = true;
                 GameDataMgr.Instance.playerIsAtking = isAttacking;
                 animator.SetTrigger("CanAttack");
@@ -133,7 +132,6 @@ public class LU_Attack : MonoBehaviour
                     else
                         ComboStep++;
                     animator.SetInteger("ComboStep", ComboStep);
-                    EnableTrigger();
                     isAttacking = true;
                     GameDataMgr.Instance.playerIsAtking = isAttacking;
                     animator.SetTrigger("CanAttack");
@@ -251,6 +249,7 @@ public class LU_Attack : MonoBehaviour
     public Collider triggerCollider;
     public void EnableTrigger()
     {
+        AudioManager.Instance.PlayAttack(transform.position);
         AtkTrigger atkTrigger = triggerCollider.gameObject.GetComponentInChildren<AtkTrigger>();
         atkTrigger.ClearHitList();
         atkTrigger.hitedTime = Time.time;

@@ -112,7 +112,7 @@ public class Auto : MonoBehaviour
         if (AtkCount != -1)                                    // 之前正在攻击
             SocketMgr.Instance.SendMonsterAnimation(2, -1, monsterData.monsterid, transform.position, transform.eulerAngles.y);  // 停止信号
         AtkCount = 0;
-       agent.speed = 3f;
+       agent.speed = 20f;
        animator.SetFloat("Speed", 1);
        agent.SetDestination(curTarget.position);
        animator.SetInteger("LorRMove", 0);
@@ -170,6 +170,7 @@ public class Auto : MonoBehaviour
     }
     public virtual void OnHurt()
     {
+        AudioManager.Instance.PlayHurt(transform.position);
         print("敌人受伤");
         animator.SetTrigger("Hurt");
         SocketMgr.Instance.Send(5, BitConverter.GetBytes(GameDataMgr.Instance.monsters.IndexOf(gameObject)));
@@ -177,6 +178,7 @@ public class Auto : MonoBehaviour
 
     public virtual void OnDeath()
     {
+        AudioManager.Instance.PlayDeath(transform.position);
         print("敌人死亡");
         animator.SetBool("Death", true);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BeginPanel : BasePanel
@@ -11,6 +12,7 @@ public class BeginPanel : BasePanel
     public Button startButton;
     public Button setButton;
     public Button aboutButton;
+    public Button exitButton;
 
     private void Start()
     {
@@ -26,6 +28,11 @@ public class BeginPanel : BasePanel
         aboutButton.onClick.AddListener(() => {
             //showPanel = false;
         });
+        exitButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadSceneAsync("HomeScene").allowSceneActivation = true;
+
+        }); 
     }
 
 }

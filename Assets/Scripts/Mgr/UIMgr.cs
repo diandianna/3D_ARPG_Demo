@@ -28,6 +28,7 @@ public class UIMgr : MonoBehaviour
 
     public BasePanel ShowPanel<T>() where T : BasePanel
     {
+        AudioManager.Instance.PlayUIClick();
         string panelName = typeof(T).Name;
 
         if (panels.ContainsKey(panelName) && panels[panelName] != null)
