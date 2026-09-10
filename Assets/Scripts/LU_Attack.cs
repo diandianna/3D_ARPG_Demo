@@ -18,6 +18,10 @@ public class LU_Attack : MonoBehaviour
     public float UltimateEnergy = 0f;
 
     public GameObject VFXAttack;
+    public GameObject VFXSkill1;
+    public GameObject VFXSkill2;
+    public GameObject VFXSkill3;
+    public GameObject VFXUltimate;
     public GameObject VFXAttackAround;
 
     public Transform SpawnAttack1;
