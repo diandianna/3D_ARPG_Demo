@@ -112,7 +112,7 @@ public class Auto : MonoBehaviour
         if (AtkCount != -1)                                    // 之前正在攻击
             SocketMgr.Instance.SendMonsterAnimation(2, -1, monsterData.monsterid, transform.position, transform.eulerAngles.y);  // 停止信号
         AtkCount = 0;
-       agent.speed = 20f;
+       agent.speed = 2f;
        animator.SetFloat("Speed", 1);
        agent.SetDestination(curTarget.position);
        animator.SetInteger("LorRMove", 0);

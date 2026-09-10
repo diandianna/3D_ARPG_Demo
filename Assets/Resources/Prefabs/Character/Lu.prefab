@@ -131,15 +131,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1313,6 +1313,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: -499164141183859453}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1193554485297400196}
     - targetCorrespondingSourceObject: {fileID: 5268728466798623491, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3626536724872326481}
@@ -1339,7 +1342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 7597390729702191292}
   playerCamera: {fileID: 0}
-  Movespeed: 30
+  Movespeed: 3
   rotateSpeed: 15
 --- !u!114 &1441458262554901322
 MonoBehaviour:
@@ -1360,6 +1363,10 @@ MonoBehaviour:
   isAttacking: 0
   UltimateEnergy: 0
   VFXAttack: {fileID: 1130446560849736, guid: a867880b33133d84c988bc6754c87de2, type: 3}
+  VFXSkill1: {fileID: 0}
+  VFXSkill2: {fileID: 0}
+  VFXSkill3: {fileID: 0}
+  VFXUltimate: {fileID: 0}
   VFXAttackAround: {fileID: 1294101409476956, guid: 38cffaf96aafefc4e8b06a2ccc1083e2, type: 3}
   SpawnAttack1: {fileID: 7181750628840670}
   SpawnAttack2_1: {fileID: 7098892296948740708}
@@ -1429,6 +1436,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1193554485297400196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3802347490845601916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c39f8013340cff4788c0de548e320e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &7597390729702191292 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: fc7f7aff00963a5469ecdc06f431b4a3, type: 3}

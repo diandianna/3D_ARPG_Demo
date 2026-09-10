@@ -13,8 +13,8 @@ public class Loading : MonoBehaviour
 
     void Start()
     {
-        //随机1-3的数字，随机显示背景图
-        int rand = Random.Range(1, 4);
+        //随机1-4的数字，随机显示背景图
+        int rand = 4;/*Random.Range(1, 5);*/
         imgBk.sprite = Resources.Load<Sprite>("Loading/Loading" + rand);
         progressHandle.sprite = Resources.Load<Sprite>("Loading/LoadingBar/LoadingBar" + rand);
 

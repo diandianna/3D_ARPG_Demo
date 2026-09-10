@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BaseMove : MonoBehaviour
@@ -28,6 +29,18 @@ public class BaseMove : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameDataMgr.Instance.playerDeath = false;
+            GameDataMgr.Instance.playerHurting = false;
+            GameDataMgr.Instance.borned = false;
+            GameDataMgr.Instance.playerData.hp = GameDataMgr.Instance.playerData.MaxHp;
+            SocketMgr.Instance.Send(2, GameDataMgr.Instance.playerData.GetPlayerDataBytes());
+            SceneLoaderMgr.Instance.targetSceneName = "Moon_scene";
+            SceneManager.LoadScene("LoadingScene");
+        }
+
+
         //GameDataMgr.Instance.playerPos = gameObject.transform.position;
         //GameDataMgr.Instance.playerRot = gameObject.transform.eulerAngles;
         if (GameDataMgr.Instance.playerHurting) return;
@@ -86,6 +99,7 @@ public class BaseMove : MonoBehaviour
 
     public void SetCameraSpeed(float speed)
     {
+        if (playerCamera == null) return;   // 相机不是 PlayerCamera 或还没初始化就安全跳过
         playerCamera.rotateSpeed = speed;
     }
 
@@ -255,7 +269,7 @@ public class BaseMove : MonoBehaviour
         float step = delta.magnitude;
 
         if(Physics.CapsuleCast(bottom,top,0.4f,delta.normalized,
-            out RaycastHit hit, step+0.2f , ~0, QueryTriggerInteraction.Ignore))
+            out RaycastHit hit, step+0.2f , ~(1<<LayerMask.NameToLayer("Ground")), QueryTriggerInteraction.Ignore))
         {
             float allowed = Mathf.Max(0, hit.distance - 0.05f);
             return delta.normalized * Mathf.Min(step, allowed);

@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class BossData : MonsterData
 {
+    [Tooltip("Boss当前阶段")]
     public int Phase = 1;
+    [Tooltip("Boss总共阶段数")]
     int maxPhases = 2;
     public bool phaseTransitioning;
+    [Header("Boss最大血量")]
+    public int MaxHp = 1000;
     private void Awake()
     {
         monsterType = "Boss";
         monsterTypeid = 3;
+        maxhp = MaxHp;
     }
     public override void DamageTaken(int damage)
     {
