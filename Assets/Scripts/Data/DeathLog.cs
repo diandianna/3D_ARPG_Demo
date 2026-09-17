@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 怪物死亡日志 —— 记录怪物从出生到死亡的完整行为履历。

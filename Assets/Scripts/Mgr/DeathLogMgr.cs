@@ -165,7 +165,10 @@ public class DeathLogMgr : MonoBehaviour
         }
         // TODO: 金币和经验暂不发放（等背包/经验系统上线后接入）
         GameDataMgr.Instance.playerData.AddMoney(result.gold,0);// += result.gold;
-        GameDataMgr.Instance.playerData.AddExp(result.exp);// += result.exp;
+        //GameDataMgr.Instance.playerData.AddExp(result.exp);// += result.exp;
+        GrowthMgr.Instance.AddExp(result.exp);   // 改成走 GrowthMgr，才会判升级
+        TaskMgr.Instance?.OnMonsterKilled(monsterType:log.monsterType);
+
 
         Archive(log);
 

@@ -14,6 +14,7 @@ public class MoonScene : MonoBehaviour
     private void Awake()
     {
         GameDataMgr.Instance.mainCharacter = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Character/Lu"), BornPos.transform.position, BornPos.transform.rotation);
+        // 出生点固定是 GameScene 的，这里不再覆盖 spawnPos（死亡回城，不是回 Boss 门口）
         SocketMgr.Instance.WorldCanvasTrans = WorldCanvasTrans;
         GameDataMgr.Instance.mainCharacter.GetComponent<BaseMove>().playerCamera = Camera.main.gameObject.GetComponent<PlayerCamera>();
         Camera.main.gameObject.GetComponent<PlayerCamera>().target = GameDataMgr.Instance.mainCharacter.transform;

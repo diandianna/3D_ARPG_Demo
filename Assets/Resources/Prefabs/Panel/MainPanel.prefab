@@ -2307,10 +2307,14 @@ MonoBehaviour:
   isAnimating: 0
   money1: {fileID: 6430259244098642022}
   money2: {fileID: 8698448654941763412}
+  setting: {fileID: 0}
   start: {fileID: 5828378464219074543}
   character: {fileID: 9206087705955220404}
   bag: {fileID: 3309660175323918121}
   shop: {fileID: 5421370704860631316}
+  task: {fileID: 1529747469471207640}
+  data: {fileID: 7488757680356843854}
+  canvas: {fileID: 0}
 --- !u!1 &8856707309143672218
 GameObject:
   m_ObjectHideFlags: 0

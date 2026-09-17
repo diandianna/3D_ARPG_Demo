@@ -15,6 +15,8 @@ public class MainPanel : BasePanel
     public Button character;
     public Button bag;
     public Button shop;
+    public Button task;
+    public Button data;
 
     public Transform canvas;
 
@@ -39,11 +41,19 @@ public class MainPanel : BasePanel
         });
         bag.onClick.AddListener(() =>
         {
-
+            UIMgr.Instance.ShowPanel<BackpackPanel>();
         });
         shop.onClick.AddListener(() =>
         {
             UIMgr.Instance.ShowPanel<ShopPanel>();
+        });
+        task.onClick.AddListener(() =>
+        {
+            UIMgr.Instance.ShowPanel<TaskPanel>();
+        });
+        data.onClick.AddListener(() =>
+        {
+            UIMgr.Instance.ShowPanel<GrowthPanel>();
         });
 
         t1 = Time.time;

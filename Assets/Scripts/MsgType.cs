@@ -14,6 +14,8 @@ using UnityEngine;
         Atk = 5,//攻击信息，返回伤害值给客户端
         MoveSync = 6,//移动同步
         HeartBeat = 7,//心跳消息
+        ShopBuy = 8,//商店购买（客户端发 itemId，服务器查价扣钱回权威金币）
+        TaskClaim = 9,//任务领奖（客户端发 taskId，服务器查奖励表发奖）
 
         Hurt = 95,
         VisitorHurt = 96,//访客受伤消息（受击和死亡动画都通过这个）

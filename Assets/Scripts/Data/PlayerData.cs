@@ -148,14 +148,10 @@ public class PlayerData
     public  void ChangeHp(int num)
     {
         this.hp += num;
-        if (hp <= 0) 
+        if (hp <= 0)
         {
-           Animator animator = GameDataMgr.Instance.mainCharacter.GetComponent<Animator>();
-            if(animator != null)
-            {
-                animator.SetBool("Death", true);
-                GameDataMgr.Instance.playerDeath = true;
-            }
+            hp = 0;
+            GameDataMgr.Instance.OnPlayerDead();   // 死亡统一入口：播死亡动画 + 定时复活
         }
         else if (hp > MaxHp)
         {

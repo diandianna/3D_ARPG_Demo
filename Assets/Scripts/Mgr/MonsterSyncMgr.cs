@@ -135,7 +135,7 @@ public class MonsterSyncMgr : MonoBehaviour
             case 2:
                 {
                     monsterType = "Elite";
-                    obj = Resources.Load<GameObject>("Prefabs/Character/ChangeYu");
+                    obj = Resources.Load<GameObject>("Prefabs/Character/Changyu");
                 }
                 break;
             case 3:

@@ -250,6 +250,41 @@ public class LU_Attack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 技能伤害（客户端写死，demo 简化版）：由技能动画命中帧的 AnimationEvent 调用，参数=技能编号 1/2/3/4。
+    /// 完整版应是「客户端报 skillId + 服务器查表算伤防作弊」，这里为演示直接本地扣血。
+    /// 联机暂不接技能伤害同步（isRoom 跳过），视频联机片段不放技能即可。
+    /// </summary>
+    public void SkillDamage(int skillId)
+    {
+        if (SyncMgr.Instance.isRoom) return;   // 联机不本地扣血，避免房主/访客血量不同步
+
+        int[] damageTable = { 40, 60, 150, 300 };   // 技能1/2/3/R 写死伤害，普通怪 hp=100，可自己调
+        float[] rangeTable = { 3f, 4f, 6f, 8f };    // 技能1/2/3/R AOE 半径，越大越是大招
+        if (skillId < 1 || skillId > damageTable.Length) return;
+        int damage = damageTable[skillId - 1];
+        float range = rangeTable[skillId - 1];
+
+        Collider[] cols = Physics.OverlapSphere(transform.position, range);
+        HashSet<MonsterData> hit = new HashSet<MonsterData>();
+
+        foreach (Collider col in cols)
+        {
+            MonsterData md = col.GetComponentInParent<MonsterData>();
+            if (md != null) hit.Add(md);
+        }
+
+        Transform canvas = SocketMgr.Instance.WorldCanvasTrans;
+        foreach (MonsterData md in hit)
+        {
+            int idx = GameDataMgr.Instance.monsters.IndexOf(md.gameObject);
+            if (idx >= 0 && canvas != null)
+                DamageFontMgr.Instance.ShowDamageFont(md.transform.position + Vector3.up * 1.5f, damage, canvas, idx);   // 普通怪：飘字 + 掉血
+            else
+                md.DamageTaken(damage);   // Boss 等不在 monsters 列表的：只掉血不飘字
+        }
+    }
+
     public Collider triggerCollider;
     public void EnableTrigger()
     {

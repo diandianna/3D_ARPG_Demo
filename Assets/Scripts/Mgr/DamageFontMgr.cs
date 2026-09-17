@@ -37,5 +37,7 @@ public class DamageFontMgr : MonoBehaviour
 
         Auto monsterInfo = GameDataMgr.Instance.monsters[enemyIndex].GetComponent<Auto>();
         monsterInfo.monsterData.DamageTaken(damage);
+
+        Destroy(obj, 2.5f);
     }
 }

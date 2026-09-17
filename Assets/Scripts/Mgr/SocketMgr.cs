@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Net;
@@ -61,7 +61,7 @@ public class SocketMgr : MonoBehaviour
                 case LoginMsg l:
                     if (l.ok)
                     {
-                        SceneLoaderMgr.Instance.targetSceneName = "MainScene";
+                        SceneLoaderMgr.Instance.targetSceneName = "GameScene";
                         SceneManager.LoadScene("LoadingScene");
                     }
                     else
@@ -147,7 +147,7 @@ public class SocketMgr : MonoBehaviour
 
                 case SingleHurtMsg sh:
                     GameDataMgr.Instance.playerData.hp = sh.hp;
-                    if (sh.dead == 1) GameDataMgr.Instance.mainCharacter.GetComponent<Animator>().SetBool("Death", true);
+                    if (sh.dead == 1) GameDataMgr.Instance.OnPlayerDead();
                     break;
 
                 case VisitorHurtMsg vh:
@@ -204,6 +204,15 @@ public class SocketMgr : MonoBehaviour
 
                 case MonsterAnimMsg manim:
                     HandleMonsterAnim(manim);
+                    break;
+
+                // 商店/任务回包 → 交给 PlayerSyncMgr 统一处理（更新本地金币/背包）
+                case ShopBuyMsg sb:
+                    PlayerSyncMgr.Instance?.OnShopBuyResult(sb.result, sb.itemId, sb.newMoney);
+                    break;
+
+                case TaskClaimMsg tc:
+                    PlayerSyncMgr.Instance?.OnTaskClaimResult(tc.result, tc.taskId, tc.newMoney, tc.newExp);
                     break;
             }
         }
@@ -598,6 +607,29 @@ public class SocketMgr : MonoBehaviour
                     _msgQueue.Enqueue(new MonsterAnimMsg { animId = animationId, combo = combo, pos = new Vector3(posX, posY, posZ), yaw = yaw, monsterId = monsterId, name = name });
                 }
                 break;
+
+            // 服务器回包：商店购买结果
+            // 布局：[4 总长][4 type=8][4 result][4 itemId][4 新金币]
+            case MsgType.ShopBuy:
+                {
+                    int result   = BitConverter.ToInt32(buffer, index); index += 4;   // 1成功 0失败
+                    int itemId   = BitConverter.ToInt32(buffer, index); index += 4;
+                    int newMoney = BitConverter.ToInt32(buffer, index); index += 4;   // 服务器扣完钱后的权威金币
+                    _msgQueue.Enqueue(new ShopBuyMsg { result = result, itemId = itemId, newMoney = newMoney });
+                }
+                break;
+
+            // 服务器回包：任务领奖结果
+            // 布局：[4 总长][4 type=9][4 result][4 taskId][4 新金币][4 新经验]
+            case MsgType.TaskClaim:
+                {
+                    int result   = BitConverter.ToInt32(buffer, index); index += 4;
+                    int taskId   = BitConverter.ToInt32(buffer, index); index += 4;
+                    int newMoney = BitConverter.ToInt32(buffer, index); index += 4;
+                    int newExp   = BitConverter.ToInt32(buffer, index); index += 4;
+                    _msgQueue.Enqueue(new TaskClaimMsg { result = result, taskId = taskId, newMoney = newMoney, newExp = newExp });
+                }
+                break;
         }
     }
 
@@ -780,6 +812,8 @@ sealed class PossessFailMsg       { }
 sealed class PossessReqMsg        { public int roomId; public string name; public int id; public int flag; public int allLen; }
 sealed class PlayerAnimMsg        { public int animId; public int combo; public string name; }
 sealed class MonsterAnimMsg       { public int animId; public int combo; public int monsterId; public Vector3 pos; public float yaw; public string name; }
+sealed class ShopBuyMsg           { public int result; public int itemId; public int newMoney; }
+sealed class TaskClaimMsg         { public int result; public int taskId; public int newMoney; public int newExp; }
 
 
 /* type 说明（与服务器约定）

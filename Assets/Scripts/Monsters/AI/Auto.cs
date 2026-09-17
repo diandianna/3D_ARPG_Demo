@@ -71,9 +71,8 @@ public class Auto : MonoBehaviour
         }
         else agent.isStopped = false;
 
-        if (monsterData.hp <= 0) return;
-
         hpImg.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1.5f * monsterData.hp / monsterData.maxhp);
+        if (monsterData.hp <= 0) return;
 
         curTarget = hateTarget != null ? hateTarget : targetPos;
         if (curTarget == null)

@@ -111,6 +111,7 @@ public class SettingPanel : BasePanel
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Time.timeScale = 1;   // 顺手修：原来按 Esc 关设置会卡在暂停
             UIMgr.Instance.HidePanel<SettingPanel>();
         }
     }
