@@ -143,6 +143,7 @@ public class BulletTimeMgr : MonoBehaviour
     public IEnumerator SphereMove(int MonsterIndex)
     {
         sphereIsMoving = true;
+        GameObject target = monsters[MonsterIndex];
         GameObject obj;
         Vector3 startPos;
         Vector3 endPos;
@@ -150,7 +151,7 @@ public class BulletTimeMgr : MonoBehaviour
 
         obj = GameObject.Instantiate(sphere, PlayerTrans.position + Vector3.up * 0.5f, Quaternion.identity);
         startPos = obj.transform.position;
-        endPos = monsters[MonsterIndex].transform.position + Vector3.up * 0.5f;
+        endPos = target.transform.position + Vector3.up * 0.5f;
         
         mainCam.enabled = false;
         sphereCam.transform.position = PlayerTrans.position + Vector3.up * 0.5f + Vector3.right + Vector3.forward *-1;
@@ -182,15 +183,15 @@ public class BulletTimeMgr : MonoBehaviour
             yield break;
         }
 
-        GameDataMgr.Instance.possessionCharacter = monsters[MonsterIndex];
+        GameDataMgr.Instance.possessionCharacter = target;
         GameDataMgr.Instance.isPossession = true;
-        if (SyncMgr.Instance.isRoom && !GameDataMgr.Instance.possessedMonsters.Contains(monsters[MonsterIndex])&&!SyncMgr.Instance.isHost)
+        if (SyncMgr.Instance.isRoom && !GameDataMgr.Instance.possessedMonsters.Contains(target)&&!SyncMgr.Instance.isHost)
         {
-            GameDataMgr.Instance.possessedMonsters.Add(monsters[MonsterIndex]);
+            GameDataMgr.Instance.possessedMonsters.Add(target);
             int id = -1;
             foreach(var m in MonsterSyncMgr.Instance.monsters)
             {
-                if (m.Value == monsters[MonsterIndex])
+                if (m.Value == target)
                 {
                     id=m.Key;
                     break;
@@ -203,7 +204,7 @@ public class BulletTimeMgr : MonoBehaviour
             BitConverter.GetBytes(1).CopyTo(buffer,8);
             SocketMgr.Instance.Send(101, buffer);
         }
-        PlayerCamera.SetTarget(monsters[MonsterIndex].transform);
+        PlayerCamera.SetTarget(target.transform);
         AudioManager.Instance.PlayPossessIn();
         PossessionCosts.Instance.OnPossessStart();
 

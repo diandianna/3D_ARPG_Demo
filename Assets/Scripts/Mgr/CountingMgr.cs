@@ -16,9 +16,14 @@ public class CountingMgr : MonoBehaviour
         Instance = this;
     }
 
-    
+    void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     void Update()
     {
+        if (atkCounting == null) return;
         if (Time.time - atkCountTime > 3f)
         {
             atkCount = 0;
@@ -32,6 +37,7 @@ public class CountingMgr : MonoBehaviour
 
     public void AtkCounting()
     {
+        if (atkCounting == null) return;
         atkCounting.text = (++atkCount).ToString();
         atkCountTime = Time.time;
     }

@@ -35,8 +35,13 @@ public class DamageFontMgr : MonoBehaviour
         obj.transform.SetParent(WorldCanvasTrans);
         objText.text = damage.ToString();
 
-        Auto monsterInfo = GameDataMgr.Instance.monsters[enemyIndex].GetComponent<Auto>();
-        monsterInfo.monsterData.DamageTaken(damage);
+        // monsters 是 List，越界或目标已销毁时只飘字、不结算伤害，
+        // 避免 ArgumentOutOfRange 打断调用方的消息处理循环
+        GameObject monster = (enemyIndex >= 0 && enemyIndex < GameDataMgr.Instance.monsters.Count)
+                             ? GameDataMgr.Instance.monsters[enemyIndex] : null;
+        Auto monsterInfo = monster != null ? monster.GetComponent<Auto>() : null;
+        if (monsterInfo != null && monsterInfo.monsterData != null)
+            monsterInfo.monsterData.DamageTaken(damage);
 
         Destroy(obj, 2.5f);
     }

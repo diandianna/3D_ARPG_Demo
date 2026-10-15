@@ -89,11 +89,16 @@ public class SocketMgr : MonoBehaviour
                 case AtkMsg a:
                     {
                         Debug.Log("服务器返回攻击消息");
+                        // monsters 是 List：服务器报来的 enemyIndex 本地未必存在（目标已死/刚换场景
+                        // 都可能不同步），裸索引会抛 ArgumentOutOfRange 打断整个消息处理循环
+                        if (a.enemyIndex < 0 || a.enemyIndex >= GameDataMgr.Instance.monsters.Count) break;
+                        GameObject target = GameDataMgr.Instance.monsters[a.enemyIndex];
+                        if (target == null) break;
                         float randomX = Random.Range(-1.5f, 1.5f);
-                        Vector3 pos = GameDataMgr.Instance.monsters[a.enemyIndex].transform.position
+                        Vector3 pos = target.transform.position
                                       + transform.position + transform.right * randomX + transform.up * 1.8f;
                         DamageFontMgr.Instance.ShowDamageFont(pos, a.damage, WorldCanvasTrans, a.enemyIndex);
-                        CountingMgr.Instance.AtkCounting();
+                        CountingMgr.Instance?.AtkCounting();
                     }
                     break;
 
@@ -129,8 +134,19 @@ public class SocketMgr : MonoBehaviour
                     break;
 
                 case PossessionMonsterMsg pm:
-                    Debug.Log("访客控制怪物同步");
-                    MonsterSyncMgr.Instance.OnRecvPossessionMonster(pm.id, pm.pos, pm.yaw);
+                    if (SyncMgr.Instance.isHost)
+                    {
+                        GameObject hostMonster = GameDataMgr.Instance.GetMonsterByID(pm.id);
+                        if (hostMonster != null)
+                        {
+                            hostMonster.transform.position = pm.pos;
+                            hostMonster.transform.rotation = Quaternion.Euler(0, pm.yaw, 0);
+                        }
+                    }
+                    else
+                    {
+                        MonsterSyncMgr.Instance.OnRecvPossessionMonster(pm.id, pm.pos, pm.yaw);
+                    }
                     break;
 
                 case PossessSuccessMsg ps:

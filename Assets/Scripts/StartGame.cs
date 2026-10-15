@@ -56,9 +56,9 @@ public class StartGame : MonoBehaviour
             timer += Time.deltaTime;
         if (canvasGroup.alpha <= 0 && once)
         {
-            SceneManager.LoadScene("HomeScene");
+            SceneManager.LoadScene("BeginScene");
         }
-
+        
         if (canvasGroup.alpha <= 0)
         {
             if (!once)
