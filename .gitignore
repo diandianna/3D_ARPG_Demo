@@ -109,3 +109,15 @@ Thumbs.db
 /Assets/Shaders/
 /Assets/PostProcessing/
 /Assets/_TerrainAutoUpgrade/
+
+# ===== 服务端（.NET）=====
+# 上面那条 *.csproj / *.sln 是冲 Unity 自动生成的工程文件去的；
+# Server 下面这两个是服务端源码，要提交
+!Server/**/*.csproj
+!Server/**/*.sln
+Server/**/bin/
+Server/**/obj/
+Server/**/save.json
+
+# ===== Unity 插件生成的说明文件（本地留着，不公开）=====
+AGENTS.md

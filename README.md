@@ -37,18 +37,15 @@ Unity 做的 3D 动作 RPG 练习项目。有角色控制、战斗、成长系�
 
 ### 服务器
 
-服务器是独立项目，不在这个仓库里：
-
-```
-D:\develop\My_Course\C++&C\3DArpgServer
-```
+需要 .NET 8 SDK，在 `Server/3DArpgServer` 下：
 
 ```bash
-cd 3DArpgServer
 dotnet run
 ```
 
-监听 `127.0.0.1:8080`，跨机器联机要改成局域网 IP。
+默认监听 `127.0.0.1:8080`，跨机器联机时改成局域网 IP（客户端那边也要改）。
+
+玩家数据存在 exe 同目录的 `save.json` 里，服务器重启不丢。
 
 ## 目录
 
@@ -61,6 +58,9 @@ Assets/Scripts/
 ├── Scene/       # 场景逻辑
 ├── TextScript/  # 文本相关
 └── UI/          # UI 面板
+
+Server/          # 服务端，.NET 8 独立进程
+└── 3DArpgServer/
 ```
 
 ## 联机协议
